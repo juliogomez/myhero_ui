@@ -1,0 +1,41 @@
+pipeline:
+  BuildStart:
+    image: hpreston/drone-ansible-netdevops
+    commands:
+      - echo "Starting Build"
+      - git fetch
+      - git checkout ${DRONE_BRANCH}
+
+  Publish:
+    image: plugins/docker
+    repo: <DockerHub_username>/myhero_ui
+    secrets: [ docker_username, docker_password ]
+    tag: ${DRONE_COMMIT}
+
+  Deploy:
+    image: nytimes/drone-gke
+    zone: <your_GKE_zone>
+    cluster: <your_GKE_cluster_name>
+    project: <your_GKE_project_id>
+    namespace: default
+    template: k8s_myhero_ui.yml
+    secret_template: k8s_myhero_ui.sec.yml
+    vars:
+      image: <DockerHub_username>/myhero-ui:${DRONE_COMMIT}
+    secrets:
+      - source: GOOGLE_CREDENTIALS
+        target: token
+      - source: API_TOKEN
+        target: secret_api_token
+      - source: P12_CERT
+        target: secret_base64_p12_cert
+    when:
+      event: push
+      branch: master
+
+  SparkNotify:
+    image: hpreston/drone-spark:0.7
+    secrets: [ SPARK_TOKEN, PERSONEMAIL ]
+    message: "Build Done!"
+    when:
+      status: [ success, failure ]

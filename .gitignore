@@ -1,0 +1,13 @@
+logs/*
+!.gitkeep
+node_modules/
+bower_components/
+tmp
+.DS_Store
+.idea
+.vagrant
+drone-secrets.yml
+.drone.yml
+app-local.js
+k8s_myhero_ui.yml
+k8s_myhero_ui.sec.yml

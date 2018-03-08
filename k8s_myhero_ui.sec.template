@@ -1,0 +1,12 @@
+---
+kind: Secret
+apiVersion: v1
+ 
+metadata:
+  name: secrets
+ 
+type: Opaque
+ 
+data:
+  api-token: <insert_your_token_here>
+  p12-cert: <insert_your_cert_here>
