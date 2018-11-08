@@ -8,7 +8,7 @@ pipeline:
 
   Publish:
     image: plugins/docker
-    repo: <DockerHub_username>/myhero_ui
+    repo: <DockerHub_username>/myhero-ui
     secrets: [ docker_username, docker_password ]
     tag: ${DRONE_COMMIT}
 
