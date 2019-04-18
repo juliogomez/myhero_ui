@@ -19,10 +19,10 @@ var app = angular.module('myHeroApp', [
 ]);
 
 app.constant('config', {
-    apiTropo: 'MYHERO_TROPO_SERVER',
-    apiSpark: 'MYHERO_SPARK_SERVER',
-    apiURL: 'MYHERO_APP_SERVER',
-    apiKey: 'MYHERO_APP_KEY'
+    apiTropo: '',
+    apiSpark: 'http://spark.burstserial.com',
+    apiURL: 'http://app.burstserial.com',
+    apiKey: 'SecureApp'
 });
 
 app.config(function ($routeProvider) {
