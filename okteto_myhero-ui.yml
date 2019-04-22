@@ -1,0 +1,15 @@
+name: myhero-ui
+image: okteto/node:11
+command: ["yarn", "start"]
+workdir: /usr/src/app
+resources:
+  limits:
+    memory: "512Mi"
+    cpu: "250m"
+forward:
+- 3000:8000
+scripts:
+  hello: echo Your cluster ♥s you
+  install: yarn install
+  start: yarn start
+  test: yarn run test
