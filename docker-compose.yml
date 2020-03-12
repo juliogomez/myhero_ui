@@ -12,4 +12,4 @@ services:
 networks:
   default:
      external:
-       name: myhero_data_default
+       name: myherodata_default
