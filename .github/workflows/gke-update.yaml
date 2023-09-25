@@ -47,8 +47,8 @@ jobs:
       - name: 'Configure kubectl'
         run: |-
           gcloud config set project ${{ secrets.GKE_PROJECT }}
-          gcloud config set compute/zone $GKE_ZONE
-          gcloud container clusters get-credentials $GKE_CLUSTER
+          gcloud config set compute/zone ${{ env.GKE_ZONE }}
+          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }}
 
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
