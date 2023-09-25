@@ -41,8 +41,8 @@ jobs:
       - name: 'Get GKE credentials'
         uses: 'google-github-actions/get-gke-credentials@v1'
         with:
-          cluster_name: ${{ GKE_CLUSTER }}
-          location: ${{ GKE_ZONE }}
+          cluster_name: mycluster
+          location: europe-southwest1-a
 
       - name: 'Configure kubectl'
         run: |-
