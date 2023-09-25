@@ -19,6 +19,7 @@ env:
   GKE_ZONE: europe-southwest1-a
   DEPLOYMENT_NAME: myhero-ui
   IMAGE: static-site
+  USE_GKE_GCLOUD_AUTH_PLUGIN: true
 
 jobs:
   setup-build-publish-deploy:
@@ -41,9 +42,7 @@ jobs:
       - name: 'Get GKE credentials'
         uses: 'google-github-actions/get-gke-credentials@v1'
         with:
-#          cluster_name: mycluster
           cluster_name: ${{ env.GKE_CLUSTER }}
-#          location: europe-southwest1-a
           location: ${{ env.GKE_ZONE }}
 
       - name: 'Configure kubectl'
