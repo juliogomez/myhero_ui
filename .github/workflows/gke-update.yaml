@@ -19,7 +19,6 @@ env:
   GKE_ZONE: europe-southwest1-a
   DEPLOYMENT_NAME: myhero-ui
   IMAGE: static-site
-  USE_GKE_GCLOUD_AUTH_PLUGIN: true
 
 jobs:
   setup-build-publish-deploy:
@@ -51,12 +50,6 @@ jobs:
           gcloud config set compute/zone $GKE_ZONE
           gcloud container clusters get-credentials $GKE_CLUSTER
 
-      # Setup gcloud CLI
-      # - uses: google-github-actions/setup-gcloud@v1
-      #   with:
-      #     service_account_key: ${{ secrets.GKE_SA_KEY }}
-      #     project_id: ${{ secrets.GKE_PROJECT }}
-
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
       - run: |-
@@ -84,6 +77,8 @@ jobs:
 
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
+        env:
+          USE_GKE_GCLOUD_AUTH_PLUGIN: true
         run: |-
           kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME
