@@ -38,8 +38,14 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+#      - name: 'Use gcloud CLI'
+#        run: 'gcloud info'
+
+      - name: 'Configure kubectl'
+        run: |-
+          gcloud config set project ${{ secrets.GKE_PROJECT }}
+          gcloud config set compute/zone $GKE_ZONE
+          gcloud container clusters get-credentials $GKE_CLUSTER
 
       # Setup gcloud CLI
       # - uses: google-github-actions/setup-gcloud@v1
