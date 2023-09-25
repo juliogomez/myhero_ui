@@ -15,9 +15,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: mycluster          # Add your cluster name here.
-  GKE_ZONE: europe-southwest1-a   # Add your cluster zone here.
-  DEPLOYMENT_NAME: myhero-ui      # Add your deployment name here.
+  GKE_CLUSTER: mycluster
+  GKE_ZONE: europe-southwest1-a
+  DEPLOYMENT_NAME: myhero-ui
   IMAGE: static-site
 
 jobs:
