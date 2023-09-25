@@ -24,7 +24,7 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-#    environment: production
+    environment: production
 
     steps:
       - name: Checkout
@@ -42,9 +42,9 @@ jobs:
         uses: 'google-github-actions/get-gke-credentials@v1'
         with:
 #          cluster_name: mycluster
-          cluster_name: "$GKE_CLUSTER"
+          cluster_name: '$GKE_CLUSTER'
 #          location: europe-southwest1-a
-          location: "$GKE_ZONE"
+          location: '$GKE_ZONE'
       - name: 'Configure kubectl'
         run: |-
           gcloud config set project ${{ secrets.GKE_PROJECT }}
