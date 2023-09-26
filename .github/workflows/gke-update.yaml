@@ -84,6 +84,8 @@ jobs:
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |-
+          kustomize create
+          kustomize edit add resource k8s_myhero_ui.yml
           kustomize edit set image juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME
