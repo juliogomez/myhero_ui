@@ -51,9 +51,9 @@ jobs:
 
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
-      - name: Configure Docker
-        run: |-
-          gcloud --quiet auth configure-docker
+#      - name: Configure Docker
+#        run: |-
+#          gcloud --quiet auth configure-docker
 
       - name: Docker authentication
         uses: docker/login-action@v3
