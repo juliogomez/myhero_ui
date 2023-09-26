@@ -24,26 +24,26 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-#    environment: production
+
     steps:
-      - name: 'Checkout'
+      - name: Git Checkout
         uses: actions/checkout@v4
 
-      - name: 'Google/Github auth'
+      - name: Google Cloud auth
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-      - name: 'GKE auth'
+      - name: GKE auth
         uses: simenandre/setup-gke-gcloud-auth-plugin@v1
 
-      - name: 'Get GKE credentials'
+      - name: Generate kubectl
         uses: 'google-github-actions/get-gke-credentials@v1'
         with:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
-      - name: 'Configure kubectl'
+      - name: Configure kubectl
         run: |-
           gcloud config set project ${{ secrets.GKE_PROJECT }}
           gcloud config set compute/zone ${{ env.GKE_ZONE }}
@@ -51,18 +51,17 @@ jobs:
 
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
-      - run: |-
+      - name: Configure Docker
+        run: |-
           gcloud --quiet auth configure-docker
 
-      # Docker authentication
-      - name: 'Docker authentication'
+      - name: Docker authentication
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build the Docker image
-      - name: Build
+      - name: Build Docker image
         run: |-
           docker build \
             --tag "juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA" \
@@ -70,19 +69,16 @@ jobs:
             --build-arg GITHUB_REF="$GITHUB_REF" \
             .
 
-      # Push the Docker image to Google Container Registry
-      - name: Publish
+      - name: Publish Docker image
         run: |-
           docker push "juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA"
 
-      # Set up kustomize
       - name: Set up Kustomize
         run: |-
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
           chmod u+x ./kustomize
 
-      # Deploy the Docker image to the GKE cluster
-      - name: Deploy
+      - name: Deploy to GKE cluster
         run: |-
           kustomize create
           kustomize edit add resource k8s_myhero_ui.yml
