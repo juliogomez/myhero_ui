@@ -79,12 +79,12 @@ jobs:
 
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
+        env:
+          IMG: juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
         run: |-
           echo $IMG
           kubectl apply -f k8s_myhero_ui.yml
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
-        env:
-          IMG: juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
 #          echo juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
 #          export IMG=juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
