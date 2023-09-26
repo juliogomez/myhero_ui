@@ -18,7 +18,6 @@ env:
   GKE_CLUSTER: mycluster
   GKE_ZONE: europe-southwest1-a
   DEPLOYMENT_NAME: myhero-ui
-#  IMAGE: static-site
 
 jobs:
   setup-build-publish-deploy:
@@ -26,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Git Checkout
+      - name: Git checkout
         uses: actions/checkout@v4
 
       - name: Google Cloud auth
@@ -43,13 +42,7 @@ jobs:
           cluster_name: ${{ env.GKE_CLUSTER }}
           location: ${{ env.GKE_ZONE }}
 
-#      - name: Configure GKE
-#        run: |-
-#          gcloud config set project ${{ secrets.GKE_PROJECT }}
-#          gcloud config set compute/zone ${{ env.GKE_ZONE }}
-#          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }}
-
-      - name: Docker authentication
+      - name: Docker auth
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -70,7 +63,7 @@ jobs:
       - name: Set up Kustomize
         run: |-
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
-          chmod u+x ./kustomize
+#          chmod u+x ./kustomize
 
       - name: Deploy to GKE cluster
         run: |-
