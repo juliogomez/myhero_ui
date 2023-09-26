@@ -79,7 +79,7 @@ jobs:
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
         env:
-          image: "juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA"
+          IMG: "juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA"
         run: |-
           kubectl apply -f k8s_myhero_ui.yml
           kubectl rollout status deployment/$DEPLOYMENT_NAME
