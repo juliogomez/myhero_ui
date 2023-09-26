@@ -18,6 +18,7 @@ env:
   GKE_CLUSTER: mycluster
   GKE_ZONE: europe-southwest1-a
   DEPLOYMENT_NAME: myhero-ui
+  DOCKERHUB_NAME: juliocisco
 
 jobs:
   setup-build-publish-deploy:
@@ -36,7 +37,7 @@ jobs:
       - name: GKE auth
         uses: simenandre/setup-gke-gcloud-auth-plugin@v1
 
-      - name: Generate kubectl
+      - name: Generate kubeconfig
         uses: 'google-github-actions/get-gke-credentials@v1'
         with:
           cluster_name: ${{ env.GKE_CLUSTER }}
@@ -51,14 +52,14 @@ jobs:
       - name: Build Docker image
         run: |-
           docker build \
-            --tag "juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA" \
+            --tag "${{ env.DOCKERHUB_NAME }}/$DEPLOYMENT_NAME:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
             .
 
       - name: Publish Docker image
         run: |-
-          docker push "juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA"
+          docker push "${{ env.DOCKERHUB_NAME }}/$DEPLOYMENT_NAME:$GITHUB_SHA"
 
       - name: Set up Kustomize
         run: |-
@@ -69,7 +70,7 @@ jobs:
         run: |-
           kustomize create
           kustomize edit add resource k8s_myhero_ui.yml
-          kustomize edit set image juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
+          kustomize edit set image ${{ env.DOCKERHUB_NAME }}/$DEPLOYMENT_NAME:$GITHUB_SHA
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
