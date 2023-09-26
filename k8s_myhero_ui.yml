@@ -34,8 +34,7 @@ spec:
     spec:
       containers:
       - name: myhero-ui
-#        image: juliocisco/myhero-ui:latest
-        image: $(IMG)
+        image: juliocisco/myhero-ui:latest
         livenessProbe:
           httpGet:
             path: /
