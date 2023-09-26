@@ -81,8 +81,10 @@ jobs:
       - name: Deploy
         run: |-
           echo juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
+          export IMG=juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
+          echo $IMG
           kubectl apply -f k8s_myhero_ui.yml
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
-        env:
-          IMG: juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
+#        env:
+#          IMG: juliocisco/$DEPLOYMENT_NAME:$GITHUB_SHA
