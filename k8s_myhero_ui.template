@@ -9,18 +9,23 @@ metadata:
 spec:
   ports:
   - port: 80
+    name: http
     targetPort: 80
   selector:
     app: myhero
     tier: ui
-  type: LoadBalancer
+  type: ClusterIP
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myhero-ui
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: myhero
+      tier: ui
   template:
     metadata:
       labels:
@@ -29,7 +34,7 @@ spec:
     spec:
       containers:
       - name: myhero-ui
-        image: {{.image}}
+        image: juliocisco/myhero-ui:latest
         livenessProbe:
           httpGet:
             path: /
@@ -50,7 +55,7 @@ spec:
           - name: myhero_spark_server
             value: http://<spark_DNS_URL>
           - name: myhero_app_server
-            value: http://<api_DNS_URL>
+            value: http://<app_DNS_URL>
           - name: myhero_app_key
             value: SecureApp
         imagePullPolicy: Always
