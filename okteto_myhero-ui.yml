@@ -1,8 +1,0 @@
-name: myhero-ui
-image: okteto/node:11
-command: ["yarn", "start"]
-workdir: /usr/src/app
-resources:
-   limits:
-      cpu: 1
-      memory: 1Gi
