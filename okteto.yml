@@ -1,0 +1,24 @@
+name: myhero_ui
+
+# The build section defines how to build the images of your development environment
+build:
+  myhero-ui:
+    context: .
+    dockerfile: Dockerfile
+    image: juliocisco/myhero-ui
+
+# The deploy section defines how to deploy your development environment
+deploy:
+  compose:
+    file: docker-compose.yml
+
+# The dev section defines how to activate a development container
+dev:
+    myhero-ui:
+        image: okteto/node:11
+        command: ["yarn", "start"]
+        workdir: /usr/src/app
+        resources:
+            limits:
+                cpu: 300m
+                memory: 300Mi
