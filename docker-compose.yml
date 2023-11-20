@@ -6,8 +6,8 @@ services:
     ports:
      - "15080:80"
     environment:
-     - myhero_app_server=http://localhost:15001
-     - myhero_spark_server=http://localhost:15003
+     - myhero_app_server=${MYHERO_APP_SERVER}
+     - myhero_spark_server=${MYHERO_SPARK_SERVER}
      - myhero_app_key=${MYHERO_APP_KEY}
 networks:
   default:
