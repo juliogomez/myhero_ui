@@ -1,4 +1,4 @@
-FROM nginx
+FROM --platform=linux/amd64 nginx
 MAINTAINER Julio Gomez <jgomez2@cisco.com>
 
 EXPOSE 80
